@@ -1,0 +1,163 @@
+------Requête 1 ------
+SELECT * FROM sqlix.potion;
+
+------Requête 2 ------
+SELECT nom_categ FROM sqlix.categorie WHERE nb_points= 3;
+
+------Requête 3 ------
+SELECT nom_village FROM sqlix.village WHERE nb_huttes > 35;
+
+------Requête 4 ------
+SELECT num_trophee FROM sqlix.trophee WHERE date_prise BETWEEN "2052-05-01 00:00:00" AND "2052-06-30 00:00:00";
+SELECT num_trophee FROM sqlix.trophee WHERE date_prise >= "2052-05-01 00:00:00" AND date_prise <= "2052-06-30 00:00:00";
+
+------Requête 5 ------
+SELECT nom FROM sqlix.habitant where nom like 'a%r%';
+
+------Requête 6 ------
+
+SELECT num_hab from absorber WHERE num_potion IN (1,3,4) group by num_hab;
+
+------Requête 7 ------
+SELECT num_trophee, date_prise, code_cat, num_preneur FROM sqlix.trophee;
+
+------Requête 8 ------
+SELECT nom FROM habitant h INNER JOIN village v ON h.num_village = v.num_village WHERE nom_village = 'Aquilona';
+
+------Requête 9 ------
+SELECT nom FROM habitant h 
+INNER JOIN trophee t ON h.num_hab = t.num_preneur
+INNER JOIN categorie c ON c.code_cat = t.code_cat
+WHERE nom_categ = 'Bouclier de Légat';
+
+
+------Requête 10 ------
+SELECT lib_potion, formule, constituant_principal FROM potion p
+INNER JOIN fabriquer f ON p.num_potion = f.num_potion
+INNER JOIN habitant h ON h.num_hab = f.num_hab
+WHERE nom = 'Panoramix';
+
+------Requête 11 ------
+SELECT lib_potion FROM potion p
+INNER JOIN absorber a ON p.num_potion = a.num_potion
+INNER JOIN habitant h ON h.num_hab = a.num_hab
+WHERE nom = 'Homéopatix'
+GROUP BY lib_potion;
+
+------Requête 12 ------
+SELECT a.num_hab , ha.nom
+FROM absorber a
+INNER JOIN fabriquer f ON a.num_potion = f.num_potion
+INNER JOIN habitant h ON h.num_hab = f.num_hab
+INNER JOIN habitant ha ON ha.num_hab = a.num_hab
+WHERE h.num_hab = 3
+GROUP BY a.num_hab
+
+------Requête 13 ------
+SELECT a.num_hab , ha.nom
+FROM absorber a
+INNER JOIN fabriquer f ON a.num_potion = f.num_potion
+INNER JOIN habitant h ON h.num_hab = f.num_hab
+INNER JOIN habitant ha ON ha.num_hab = a.num_hab
+WHERE h.nom = 'Amnésix'
+GROUP BY a.num_hab
+
+------Requête 14 ------
+SELECT num_hab, nom FROM habitant WHERE num_qualite IS NULL;
+
+------Requête 15 ------
+SELECT h.nom 
+FROM habitant h
+INNER JOIN absorber a ON a.num_hab = h.num_hab
+INNER JOIN potion p ON p.num_potion = a.num_potion
+WHERE p.lib_potion = 'Potion magique n°1' 
+AND (a.date_a >= '2052-02-01 00:00:00' AND a.date_a <= '2052-02-29 00:00:00')
+
+------Requête 16 ------
+SELECT nom, age FROM habitant ORDER BY nom 
+
+------Requête 17 ------
+SELECT r.nom_resserre, v.nom_village, superficie
+FROM resserre r
+INNER JOIN village v ON r.num_village = v.num_village
+ORDER BY superficie DESC
+
+------Requête 18 ------
+SELECT count(num_hab) nbr_habitant
+FROM habitant
+WHERE num_village = 5
+
+------Requête 19 ------
+SELECT sum(nb_points)totalpoint, h.nom 
+FROM categorie c
+INNER JOIN trophee t ON c.code_cat = t.code_cat
+INNER JOIN habitant h ON h.num_hab = t.num_preneur
+WHERE h.nom = 'Goudurix'
+GROUP BY h.nom;
+
+------Requête 20 ------
+SELECT date_prise FROM trophee ORDER BY date_prise LIMIT 1;
+
+------Requête 21 ------
+SELECT sum(quantite)nbr_louche, p.lib_potion 
+FROM absorber a 
+INNER JOIN potion p ON a.num_potion = p.num_potion
+WHERE lib_potion ='Potion magique n°2';
+
+------Requête 22 ------
+SELECT superficie FROM resserre ORDER BY superficie DESC LIMIT 1;
+
+------Requête 23 ------
+SELECT COUNT(h.num_hab)nbByVillage, v.nom_village
+FROM village v
+INNER JOIN habitant h ON v.num_village = h.num_village
+GROUP BY v.nom_village;
+
+------Requête 24 ------
+SELECT COUNT(t.num_trophee)nbByHab, h.nom
+FROM trophee t
+INNER JOIN habitant h ON t.num_preneur = h.num_hab
+GROUP BY h.nom;
+
+------Requête 25 ------
+SELECT ROUND(AVG(age))moyenneAge, p.nom_province
+FROM habitant h
+INNER JOIN village v ON h.num_village = v.num_village
+INNER JOIN province p ON p.num_province = v.num_province
+GROUP BY p.nom_province;
+
+------Requête 26 ------
+SELECT h.nom, SUM(quantite)nomPotion
+FROM absorber a
+INNER JOIN potion p ON p.num_potion = a.num_potion
+INNER JOIN habitant h ON h.num_hab = a.num_hab
+GROUP BY h.nom;
+
+------Requête 27 ------
+SELECT h.nom
+FROM absorber a
+INNER JOIN potion p ON p.num_potion = a.num_potion
+INNER JOIN habitant h ON h.num_hab = a.num_hab
+WHERE p.lib_potion = 'Potion zen' AND a.quantite > 2
+GROUP BY h.nom;
+
+------Requête 28 ------
+SELECT v.nom_village
+FROM resserre r
+INNER JOIN village v ON v.num_village = r.num_village
+
+------Requête 29 ------
+SELECT nom_village
+FROM village
+ORDER BY nb_huttes DESC LIMIT 1
+
+------Requête 30 ------
+SELECT h.nom, COUNT(num_trophee)nbTrophee
+FROM trophee t
+INNER JOIN habitant h ON h.num_hab = t.num_preneur
+GROUP BY h.nom
+HAVING nbTrophee > (SELECT COUNT(num_trophee)nbTrophee
+FROM trophee t
+INNER JOIN habitant h ON h.num_hab = t.num_preneur
+WHERE h.nom = 'Obélix')
+

@@ -1,1 +1,26 @@
-tata
+< -------- L’équipe avait envisagé au départ de créer la base de données avec un moteur non relationnel, 
+mais ce choix n'a finalement pas été retenu et s'oriente dorénavant vers le moteur relationnel MySQL. 
+Selon vous quelles sont les raisons qui ont poussé l’équipe à changer de stratégie ? -------- >
+
+
+
+Les bases de données relationnelles sont des bases de données basées sur des tables.
+Il s’agit justement du type de données utilisées par Léa (Fichier excel). 
+Nous n’avons pas de données diverses comme des graphiques, des documents… 
+
+Elles conviennent parfaitement à l’environnement exigeant de nombreuses requêtes.
+Il s’agit de la création d’un jeu vidéo avec une interactivité importante entre différents éléments(village, habitants…) représentés ici par les différentes tables. 
+Nous aurons ainsi à faire à des requêtes complexes entre tous ces éléments. 
+D’ailleurs les requêtes SQL offrent une puissante clause JOIN. Nous pouvons obtenir des données reliées dans plusieurs tables en utilisant une seule instruction SQL. 
+
+Les bases de données relationnelles ne conviennent pas au stockage de données hiérarchique. 
+Dans notre cas, le stockage de données ne l’est justement pas, bien au contraire, les données s’entrecroisent, 
+suivant de quelle table on se place la relation avec les autres tables n’est pas la même. 
+Aussi l’utilisation des clés primaires et étrangères vont permettent de créer tous ces liens.
+
+La plupart des bases de données SQL permettent d’appliquer des règles d’intégrité de données à l’aide de contraintes de clés étrangères.
+Toujours en lien avec le fait qu’il s’agisse d’un jeu vidéo, l’intégrité des données sera un point essentiel. 
+Ils ne faudraient pas que les données soient altérées ou détruites afin d’éviter des bugs dans le jeu, cela peut également justifier le choix de Léa.
+
+SQL requiert l'utilisation des schémas prédéfinis pour déterminer la structure des données avant de les utiliser. 
+Etant donné qu’il s’agit de la création d’un jeu vidéo, il est possible et surement préférable de structurer les différentes données qui seront utiles à son évolution.
